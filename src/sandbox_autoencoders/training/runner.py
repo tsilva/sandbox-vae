@@ -51,8 +51,19 @@ def _build_model(cfg: VariantConfig, sample_shape: tuple[int, ...]) -> nn.Module
     return VariationalAutoencoder(channels, size, cfg.latent_dim, decoder_variant=cfg.decoder_variant)
 
 
-def _to_device(batch: dict[str, torch.Tensor], device: torch.device) -> dict[str, torch.Tensor]:
-    return {key: value.to(device) for key, value in batch.items()}
+def _to_device(batch: Any, device: torch.device) -> dict[str, torch.Tensor]:
+    if isinstance(batch, dict):
+        return {key: value.to(device) for key, value in batch.items()}
+    if isinstance(batch, torch.Tensor):
+        return {"image": batch.to(device)}
+    if isinstance(batch, (list, tuple)):
+        if not batch or not isinstance(batch[0], torch.Tensor):
+            raise TypeError(f"Unsupported batch payload: {type(batch)!r}")
+        normalized = {"image": batch[0].to(device)}
+        if len(batch) > 1 and isinstance(batch[1], torch.Tensor):
+            normalized["target"] = batch[1].to(device)
+        return normalized
+    raise TypeError(f"Unsupported batch payload: {type(batch)!r}")
 
 
 def _select_inputs(batch: dict[str, torch.Tensor], temporal: bool) -> tuple[torch.Tensor, torch.Tensor | None]:

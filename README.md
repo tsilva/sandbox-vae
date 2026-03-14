@@ -1,4 +1,8 @@
-# Zero-to-Hero VAE Curriculum
+<div align="center">
+  <img src="logo.png" alt="sandbox-vae" width="512"/>
+
+  # Zero-to-Hero VAE Curriculum
+</div>
 
 This repository is a runnable curriculum for learning variational autoencoders from first principles through diagnostics, ablations, and an optional temporal extension. The core track stays on static image VAEs first, then adds a sequence-focused experiment after the fundamentals are already in place.
 
