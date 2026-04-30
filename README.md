@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.png" alt="sandbox-vae" width="512"/>
+  <img src="https://raw.githubusercontent.com/tsilva/sandbox-vae/main/logo.png" alt="sandbox-vae" width="512"/>
 
   # Zero-to-Hero VAE Curriculum
 </div>
@@ -158,6 +158,10 @@ python -m sandbox_autoencoders.experiments.exp_01_autoencoder_baseline \
   --device cpu \
   --wandb-mode disabled
 ```
+
+Learning notebook companion:
+
+- `output/jupyter-notebook/experiment-01-autoencoder-baseline.ipynb`
 
 ### 2. `exp_02_vanilla_vae_baseline`
 
