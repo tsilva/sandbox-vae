@@ -1,0 +1,23 @@
+id: ae/ae-002-nonlinearity
+question: Does a nonlinear AE improve reconstruction at the same latent size?
+hypothesis: Nonlinear hidden layers will lower validation MSE at latent dimension 8.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/ae/ae-001-linear.yaml
+controlled:
+  - dataset split
+  - latent dimension
+  - optimizer
+  - training duration
+  - reconstruction objective
+variants:
+  - name: linear
+    overrides:
+      model.hidden_dims: []
+  - name: nonlinear
+    overrides:
+      model.hidden_dims: [512, 128]
+seeds: [0, 1, 2]
+evidence:
+  - validation/reconstruction_loss
+  - parameter count
+  - fixed reconstruction grid

@@ -1,38 +1,38 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "sandbox-autoencoders"
+name = "latent-lab"
 version = "0.1.0"
-description = "Zero-to-hero VAE curriculum with shared datasets, artifacts, and W&B logging."
-requires-python = ">=3.11"
+description = "A literate experiment lab for learning AE, VAE, and VQ-VAE models from scratch."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
 dependencies = [
-  "numpy>=1.26",
-  "Pillow>=10.0",
-  "torch>=2.1",
-  "torchvision>=0.16",
-  "wandb>=0.16",
+  "matplotlib>=3.8",
+  "pyyaml>=6.0",
+  "torch>=2.3",
+  "torchvision>=0.18",
 ]
 
-[project.optional-dependencies]
+[project.scripts]
+latent-lab = "latent_lab.cli:main"
+
+[dependency-groups]
 dev = [
-  "pytest>=9.0.3",
+  "pytest>=8.0",
 ]
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/latent_lab"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+addopts = "-q"
 testpaths = ["tests"]
 
 [tool.uv]
 exclude-newer = "7 days"
 constraint-dependencies = [
-  "mistralai!=2.4.6",
   "guardrails-ai!=0.10.1",
+  "mistralai!=2.4.6",
 ]

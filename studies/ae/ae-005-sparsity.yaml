@@ -1,0 +1,29 @@
+id: ae/ae-005-sparsity
+question: How much latent L1 pressure can we add before reconstruction degrades?
+hypothesis: Mild L1 pressure will reduce activation magnitude before causing a large MSE increase.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/ae/ae-004-sparse.yaml
+controlled:
+  - dataset split
+  - architecture
+  - latent dimension
+  - optimizer
+  - training duration
+variants:
+  - name: l1-0
+    overrides:
+      objective.latent_l1_weight: 0.0
+  - name: l1-1e-4
+    overrides:
+      objective.latent_l1_weight: 0.0001
+  - name: l1-1e-3
+    overrides:
+      objective.latent_l1_weight: 0.001
+  - name: l1-1e-2
+    overrides:
+      objective.latent_l1_weight: 0.01
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - validation/latent_l1
+  - latent-space.png

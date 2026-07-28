@@ -1,0 +1,19 @@
+id: smoke/study-latent-capacity
+question: Does the study runner resolve variants, seeds, metrics, and summaries?
+hypothesis: Both synthetic variants will complete and produce an aggregate summary.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/smoke/fake-ae.yaml
+controlled:
+  - synthetic dataset
+  - one epoch
+variants:
+  - name: latent-2
+    overrides:
+      model.latent_dim: 2
+  - name: latent-4
+    overrides:
+      model.latent_dim: 4
+seeds: [0]
+evidence:
+  - aggregate study summary
+

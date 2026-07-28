@@ -1,0 +1,18 @@
+id: ae/ae-001-linear-baseline
+question: How much better is a linear bottleneck than predicting the mean image?
+hypothesis: The linear AE will learn dataset structure and beat the mean-image MSE.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/ae/ae-001-linear.yaml
+controlled:
+  - dataset split
+  - optimizer
+  - training duration
+  - reconstruction objective
+variants:
+  - name: latent-8
+    overrides: {}
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - fixed reconstruction grid
+  - mean-image baseline

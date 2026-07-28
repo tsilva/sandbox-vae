@@ -1,0 +1,31 @@
+id: vqvae/vqvae-002-commitment
+question: How strongly should the encoder commit to nearby codebook vectors?
+hypothesis: Too little pressure produces unstable latents; too much damages reconstruction.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/vqvae/vqvae-001-basic.yaml
+controlled:
+  - dataset split
+  - encoder and decoder
+  - embedding dimension
+  - codebook size
+  - optimizer
+  - training duration
+variants:
+  - name: commitment-0
+    overrides:
+      model.commitment_weight: 0.0
+  - name: commitment-0.1
+    overrides:
+      model.commitment_weight: 0.1
+  - name: commitment-0.25
+    overrides:
+      model.commitment_weight: 0.25
+  - name: commitment-1
+    overrides:
+      model.commitment_weight: 1.0
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - validation/codebook_loss
+  - validation/commitment_loss
+  - diagnostics.json perplexity

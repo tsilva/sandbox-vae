@@ -1,0 +1,31 @@
+id: vae/vae-002-collapse-remedies
+question: Do KL warm-up or free bits preserve more active latent dimensions?
+hypothesis: Both interventions will retain more active dimensions than immediate full KL pressure.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/vae/vae-001-basic.yaml
+controlled:
+  - dataset split
+  - architecture
+  - latent dimension
+  - target beta
+  - optimizer
+  - training duration
+variants:
+  - name: immediate-kl
+    overrides:
+      objective.kl_warmup_epochs: 0
+      objective.free_bits: 0.0
+  - name: warmup-10
+    overrides:
+      objective.kl_warmup_epochs: 10
+      objective.free_bits: 0.0
+  - name: free-bits-0.1
+    overrides:
+      objective.kl_warmup_epochs: 0
+      objective.free_bits: 0.1
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - validation/kl_loss
+  - diagnostics.json active_dimensions
+  - kl-per-dimension.png

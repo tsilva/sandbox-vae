@@ -1,0 +1,30 @@
+id: ae/ae-003-latent-capacity
+question: How does latent dimensionality change reconstruction quality?
+hypothesis: Reconstruction will improve with capacity, with diminishing returns.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/ae/ae-002-nonlinear.yaml
+controlled:
+  - dataset split
+  - architecture outside the bottleneck
+  - optimizer
+  - training duration
+  - reconstruction objective
+variants:
+  - name: latent-2
+    overrides:
+      model.latent_dim: 2
+  - name: latent-8
+    overrides:
+      model.latent_dim: 8
+  - name: latent-32
+    overrides:
+      model.latent_dim: 32
+  - name: latent-128
+    overrides:
+      model.latent_dim: 128
+seeds: [0, 1, 2]
+evidence:
+  - validation/reconstruction_loss
+  - fixed reconstruction grid
+  - latent interpolation
+  - linear probe accuracy

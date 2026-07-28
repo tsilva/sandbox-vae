@@ -1,0 +1,29 @@
+id: smoke/fake-vqvae
+
+dataset:
+  name: fake
+  root: data
+  train_size: 64
+  validation_size: 32
+  split_seed: 0
+
+model:
+  kind: vqvae
+  hidden_channels: 16
+  embedding_dim: 8
+  codebook_size: 16
+  commitment_weight: 0.25
+
+objective:
+  kind: vqvae
+  reconstruction: mse
+
+training:
+  epochs: 1
+  batch_size: 32
+  optimizer: adam
+  learning_rate: 0.001
+  seed: 0
+  device: cpu
+  num_workers: 0
+

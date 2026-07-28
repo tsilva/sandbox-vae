@@ -1,0 +1,33 @@
+id: ae/ae-003-denoising
+
+dataset:
+  name: fashion_mnist
+  root: data
+
+model:
+  kind: ae
+  hidden_dims: [512, 128]
+  latent_dim: 8
+  activation: relu
+  output_activation: sigmoid
+
+objective:
+  kind: ae
+  reconstruction: mse
+
+training:
+  epochs: 20
+  batch_size: 128
+  optimizer: adam
+  learning_rate: 0.001
+  seed: 0
+  device: auto
+  num_workers: 0
+  input_corruption:
+    kind: gaussian
+    standard_deviation: 0.3
+    clamp: true
+
+diagnostics:
+  max_latent_points: 2000
+

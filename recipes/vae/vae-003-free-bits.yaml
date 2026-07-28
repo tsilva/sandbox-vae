@@ -1,0 +1,33 @@
+id: vae/vae-003-free-bits
+
+dataset:
+  name: fashion_mnist
+  root: data
+
+model:
+  kind: vae
+  hidden_dims: [512, 128]
+  latent_dim: 8
+  activation: relu
+  output_activation: sigmoid
+
+objective:
+  kind: vae
+  reconstruction: bce
+  reconstruction_reduction: sum_per_sample
+  beta: 1.0
+  free_bits: 0.1
+
+training:
+  epochs: 20
+  batch_size: 128
+  optimizer: adam
+  learning_rate: 0.001
+  seed: 0
+  device: auto
+  num_workers: 0
+
+diagnostics:
+  max_latent_points: 2000
+  active_kl_threshold: 0.01
+

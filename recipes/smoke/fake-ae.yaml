@@ -1,0 +1,28 @@
+id: smoke/fake-ae
+
+dataset:
+  name: fake
+  root: data
+  train_size: 64
+  validation_size: 32
+  split_seed: 0
+
+model:
+  kind: ae
+  hidden_dims: [32]
+  latent_dim: 4
+  activation: relu
+
+objective:
+  kind: ae
+  reconstruction: mse
+
+training:
+  epochs: 1
+  batch_size: 32
+  optimizer: adam
+  learning_rate: 0.001
+  seed: 0
+  device: cpu
+  num_workers: 0
+

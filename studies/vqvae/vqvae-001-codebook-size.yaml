@@ -1,0 +1,31 @@
+id: vqvae/vqvae-001-codebook-size
+question: How does codebook size affect reconstruction and actual code utilization?
+hypothesis: Larger codebooks improve capacity but increasingly contain dead codes.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/vqvae/vqvae-001-basic.yaml
+controlled:
+  - dataset split
+  - encoder and decoder
+  - embedding dimension
+  - commitment weight
+  - optimizer
+  - training duration
+variants:
+  - name: codes-8
+    overrides:
+      model.codebook_size: 8
+  - name: codes-32
+    overrides:
+      model.codebook_size: 32
+  - name: codes-128
+    overrides:
+      model.codebook_size: 128
+  - name: codes-512
+    overrides:
+      model.codebook_size: 512
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - diagnostics.json codes_used
+  - diagnostics.json perplexity
+  - codebook-usage.png

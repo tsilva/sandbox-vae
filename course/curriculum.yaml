@@ -1,0 +1,96 @@
+title: From Bottlenecks to Discrete Latents
+version: 1
+
+lessons:
+  - id: "00"
+    title: Laboratory orientation and trust checks
+    guide: lessons/00-laboratory.md
+    estimated_minutes: 30
+    commands:
+      - uv sync --locked
+      - uv run pytest
+      - uv run latent-lab train recipes/smoke/fake-ae.yaml --device cpu
+      - uv run latent-lab train recipes/smoke/fake-vae.yaml --device cpu
+      - uv run latent-lab train recipes/smoke/fake-vqvae.yaml --device cpu
+  - id: "01"
+    title: Reconstruction and the mean-image baseline
+    guide: lessons/01-mean-baseline.md
+    estimated_minutes: 35
+    commands:
+      - uv run latent-lab baseline recipes/ae/ae-001-linear.yaml
+  - id: "02"
+    title: A genuinely linear autoencoder
+    guide: lessons/02-linear-ae.md
+    estimated_minutes: 60
+    commands:
+      - uv run latent-lab train recipes/ae/ae-001-linear.yaml
+  - id: "03"
+    title: Nonlinearity and bottleneck capacity
+    guide: lessons/03-nonlinear-capacity.md
+    estimated_minutes: 100
+    commands:
+      - uv run latent-lab study studies/ae/ae-002-nonlinearity.yaml --seeds 0
+      - uv run latent-lab study studies/ae/ae-003-latent-capacity.yaml --seeds 0
+  - id: "04"
+    title: Denoising and sparse autoencoders
+    guide: lessons/04-regularized-ae.md
+    estimated_minutes: 100
+    commands:
+      - uv run latent-lab study studies/ae/ae-004-denoising.yaml --seeds 0
+      - uv run latent-lab study studies/ae/ae-005-sparsity.yaml --seeds 0
+  - id: "05"
+    title: AE latent geometry and the sampling failure
+    guide: lessons/05-ae-geometry.md
+    estimated_minutes: 45
+    commands:
+      - uv run latent-lab inspect <AE_RUN_DIR>
+  - id: "06"
+    title: VAE distributions and the beta-zero control
+    guide: lessons/06-vae-control.md
+    estimated_minutes: 75
+    commands:
+      - uv run latent-lab train recipes/vae/vae-000-kl-off.yaml
+  - id: "07"
+    title: ELBO, KL pressure, and a sampleable prior
+    guide: lessons/07-standard-vae.md
+    estimated_minutes: 75
+    commands:
+      - uv run latent-lab train recipes/vae/vae-001-basic.yaml
+  - id: "08"
+    title: The VAE rate-distortion experiment
+    guide: lessons/08-beta-sweep.md
+    estimated_minutes: 120
+    commands:
+      - uv run latent-lab study studies/vae/vae-001-beta-sweep.yaml --seeds 0
+  - id: "09"
+    title: Posterior collapse, warm-up, and free bits
+    guide: lessons/09-collapse.md
+    estimated_minutes: 100
+    commands:
+      - uv run latent-lab study studies/vae/vae-002-collapse-remedies.yaml --seeds 0
+  - id: "10"
+    title: VQ-VAE quantization and straight-through learning
+    guide: lessons/10-vqvae.md
+    estimated_minutes: 80
+    commands:
+      - uv run latent-lab train recipes/vqvae/vqvae-001-basic.yaml
+  - id: "11"
+    title: Codebook capacity, utilization, and commitment
+    guide: lessons/11-codebook.md
+    estimated_minutes: 150
+    commands:
+      - uv run latent-lab study studies/vqvae/vqvae-001-codebook-size.yaml --seeds 0
+      - uv run latent-lab study studies/vqvae/vqvae-002-commitment.yaml --seeds 0
+  - id: "12"
+    title: Turning VQ-VAE tokens into a generative model
+    guide: lessons/12-code-prior.md
+    estimated_minutes: 120
+    commands:
+      - uv run latent-lab train-prior recipes/prior/prior-001-gru.yaml <VQ_RUN_DIR>/checkpoint-best.pt
+  - id: "13"
+    title: Final comparison and teach-back
+    guide: lessons/13-synthesis.md
+    estimated_minutes: 120
+    commands:
+      - uv run pytest
+

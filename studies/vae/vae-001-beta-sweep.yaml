@@ -1,0 +1,31 @@
+id: vae/vae-001-beta-sweep
+question: How does KL pressure trade reconstruction fidelity for prior matching?
+hypothesis: Higher beta will lower KL and improve prior samples while worsening reconstruction.
+primary_metric: validation/reconstruction_loss
+baseline: recipes/vae/vae-001-basic.yaml
+controlled:
+  - dataset split
+  - architecture
+  - latent dimension
+  - optimizer
+  - training duration
+  - observation model
+variants:
+  - name: beta-0
+    overrides:
+      objective.beta: 0.0
+  - name: beta-0.1
+    overrides:
+      objective.beta: 0.1
+  - name: beta-1
+    overrides:
+      objective.beta: 1.0
+  - name: beta-4
+    overrides:
+      objective.beta: 4.0
+seeds: [0]
+evidence:
+  - validation/reconstruction_loss
+  - validation/kl_loss
+  - active latent dimensions
+  - random-latent-samples.png
