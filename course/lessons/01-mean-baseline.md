@@ -7,6 +7,10 @@
 
 Learn why a loss number becomes meaningful only relative to a baseline.
 
+No model is trained in this lesson. It constructs deliberately
+input-independent predictors, computes them from training data, and evaluates
+them on validation data.
+
 For image $x$ and reconstruction $\hat{x}$, the mean-squared error is:
 
 $$

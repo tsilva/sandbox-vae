@@ -59,7 +59,7 @@ run_dir
 # %%
 with torch.no_grad():
     output = model(inputs)
-plot_reconstruction_grid(
+_ = plot_reconstruction_grid(
     inputs,
     output.reconstruction,
     labels=labels,
@@ -102,13 +102,21 @@ scatter = axis.scatter(
 axis.set(title="Occupied AE latent regions (2D PCA view)")
 figure.colorbar(scatter, ax=axis, label="class")
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Interpolation is not sampling
 #
 # Predict what will happen in the middle of a line between a shoe and a shirt.
 # Smoothness follows from the decoder; probability density does not.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# The middle should change smoothly because the decoder is continuous, but it
+# may resemble an implausible pixel mixture rather than a likely garment. One
+# smooth path does not establish that its intermediate points occupy
+# high-density latent regions.
+# </details>
 
 # %%
 with torch.no_grad():
@@ -116,7 +124,7 @@ with torch.no_grad():
         output.latent[0], output.latent[6], 11
     )
     decoded_path = model.decode(interpolation)
-plot_image_grid(
+_ = plot_image_grid(
     decoded_path,
     title="A straight latent interpolation",
     max_items=11,
@@ -133,7 +141,7 @@ with torch.no_grad():
     random_decoded = model.decode(
         torch.randn(16, latents.shape[1])
     )
-plot_image_grid(
+_ = plot_image_grid(
     random_decoded,
     title="N(0, I) is an out-of-distribution query for this decoder",
     max_items=16,

@@ -65,6 +65,14 @@ def test_notebook_sources_preserve_the_learning_loop() -> None:
             "advancement gate" in normalized
             or "completion criterion" in normalized
         )
+        for forbidden_prompt in (
+            "> **prediction:**",
+            "> **answer:**",
+            "> **answers:**",
+            "your answer:",
+            "your explanation:",
+        ):
+            assert forbidden_prompt not in normalized
 
 
 def test_all_latent_model_recipes_build_and_backpropagate() -> None:

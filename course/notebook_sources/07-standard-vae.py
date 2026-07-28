@@ -57,7 +57,15 @@ config = load_yaml(ROOT / "recipes/vae/vae-001-basic.yaml")
 #
 # State *why* each quantity should move, not only its direction.
 #
-# > **Prediction:**
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Relative to beta zero, reconstruction should usually worsen because KL now
+# charges for input information. Raw KL and active dimensions should decrease as
+# posteriors move toward $N(0,I)$. Prior samples should become more coherent
+# because decoding $N(0,I)$ is now closer to the latent distribution seen during
+# training. Excessive pressure could instead produce posterior collapse.
+# </details>
 
 # %%
 result = run_training(config, run_root=ROOT / "runs")
@@ -86,7 +94,7 @@ inputs, labels = balanced_class_batch(validation_loader, spec.num_classes)
 names = class_names(resolved["dataset"]["name"])
 with torch.no_grad():
     output = model(inputs)
-plot_reconstruction_grid(
+_ = plot_reconstruction_grid(
     inputs,
     output.reconstruction,
     labels=labels,
@@ -105,7 +113,7 @@ plot_reconstruction_grid(
 torch.manual_seed(0)
 with torch.no_grad():
     prior_samples = model.decode(torch.randn(16, config["model"]["latent_dim"]))
-plot_image_grid(
+_ = plot_image_grid(
     prior_samples,
     title="Samples after beta-one prior pressure",
     max_items=16,

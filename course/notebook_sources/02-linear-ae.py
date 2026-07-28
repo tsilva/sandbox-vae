@@ -59,7 +59,15 @@ config
 # 3. Should straight lines between encoded examples decode smoothly?
 # 4. Should arbitrary samples from $N(0,I)$ decode into garments?
 #
-# > **Prediction:**
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# The model should beat the constant mean by using input-dependent coordinates,
+# but eight linear dimensions will lose fine edges and texture. Linear decoding
+# makes latent interpolation smooth. Random $N(0,I)$ samples have no reason to
+# land in regions occupied by encoded garments because the AE never learned
+# that prior.
+# </details>
 
 # %% [markdown]
 # ## Train one reproducible recipe
@@ -84,7 +92,7 @@ print("best validation MSE:", result.best_validation_loss)
 
 # %%
 records = load_metrics(run_dir)
-plot_metric_history(
+_ = plot_metric_history(
     records,
     ["train/reconstruction_loss", "validation/reconstruction_loss"],
     title="Linear AE reconstruction learning curve",
@@ -113,7 +121,7 @@ print(
     "reconstruction range:",
     (float(reconstructions.min()), float(reconstructions.max())),
 )
-plot_reconstruction_grid(
+_ = plot_reconstruction_grid(
     inputs,
     reconstructions,
     labels=labels,
@@ -161,7 +169,7 @@ with torch.no_grad():
         output.latent[0], output.latent[1], steps=11
     )
     interpolated = model.decode(path).cpu()
-plot_image_grid(
+_ = plot_image_grid(
     interpolated,
     title="Straight line between two encoded examples",
     max_items=11,
@@ -172,7 +180,7 @@ torch.manual_seed(0)
 with torch.no_grad():
     random_latents = torch.randn(16, latents.shape[1], device=device)
     random_decoded = model.decode(random_latents).cpu()
-plot_image_grid(
+_ = plot_image_grid(
     random_decoded,
     title="Arbitrary N(0, I) samples: the AE never learned this prior",
     max_items=16,

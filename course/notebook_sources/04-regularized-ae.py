@@ -56,6 +56,15 @@ names = class_names(denoising_recipe["dataset"]["name"])
 #
 # Predict whether this training task should improve corrupted-input output and
 # whether it must also improve clean-input MSE.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Training against clean targets should improve reconstructions of corrupted
+# inputs because copying noise is never rewarded. Clean-input MSE need not
+# improve: robustness pressure can trade a little exact clean-image fidelity
+# for invariance to corruption.
+# </details>
 
 # %%
 torch.manual_seed(0)
@@ -63,13 +72,13 @@ corrupted = corrupt_inputs(
     inputs,
     denoising_recipe["training"]["input_corruption"],
 )
-plot_image_grid(
+_ = plot_image_grid(
     inputs,
     labels=labels,
     class_names=names,
     title="Clean targets",
 )
-plot_image_grid(
+_ = plot_image_grid(
     corrupted,
     labels=labels,
     class_names=names,
@@ -120,6 +129,15 @@ for record in denoising_summary["records"]:
 #
 # Predict reconstruction MSE and mean absolute latent activation as $\lambda$
 # increases. Which should move first?
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Mean absolute activation should fall as L1 pressure grows. Mild pressure may
+# reduce activity before materially changing reconstruction; sufficiently large
+# pressure should damage reconstruction or drive the model toward constant
+# outputs.
+# </details>
 
 # %%
 subprocess.run(
@@ -158,7 +176,6 @@ axes[1].plot(weights, activation, marker="o")
 axes[1].set(xscale="symlog", xlabel="L1 weight", ylabel="Mean |z|")
 figure.suptitle("Raw terms reveal the tradeoff hidden by total loss")
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Advancement gate

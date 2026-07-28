@@ -54,6 +54,18 @@ ROOT = repository_root()
 # | Reconstruction through straight-through output | ? | ? |
 # | Codebook loss | ? | ? |
 # | Commitment loss | ? | ? |
+#
+# <details>
+# <summary>Reveal the gradient routing</summary>
+#
+# | Term | Encoder latent | Codebook |
+# |---|---|---|
+# | Reconstruction through straight-through output | yes | no |
+# | Codebook loss | no | yes |
+# | Commitment loss | yes | no |
+#
+# Stop-gradient operations create these deliberately separated update paths.
+# </details>
 
 # %%
 torch.manual_seed(0)
@@ -94,6 +106,15 @@ print("commitment loss → codebook:", quantizer.codebook.weight.grad)
 #
 # Predict reconstruction quality, token-map structure, codes used, dead codes,
 # and perplexity before running.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Reconstructions should preserve coarse garment structure. Nearby spatial
+# regions should produce structured token maps rather than independent noise.
+# The model will probably use fewer than all 128 codes, leaving dead entries,
+# and assignment perplexity should be below nominal codebook size.
+# </details>
 
 # %%
 config = load_yaml(ROOT / "recipes/vqvae/vqvae-001-basic.yaml")
@@ -111,7 +132,7 @@ inputs, labels = balanced_class_batch(validation_loader, spec.num_classes)
 names = class_names(resolved["dataset"]["name"])
 with torch.no_grad():
     output = model(inputs)
-plot_reconstruction_grid(
+_ = plot_reconstruction_grid(
     inputs,
     output.reconstruction,
     labels=labels,
@@ -136,7 +157,6 @@ for axis, token_map, label in zip(
     axis.axis("off")
 figure.suptitle("Each 7×7 cell is one discrete code index")
 figure.tight_layout()
-figure
 
 # %%
 diagnostics = summary["codebook"]
@@ -165,7 +185,7 @@ random_indices = torch.randint(
 embeddings = model.quantizer.codebook(random_indices).permute(0, 3, 1, 2)
 with torch.no_grad():
     random_images = model.decoder(embeddings)
-plot_image_grid(
+_ = plot_image_grid(
     random_images,
     title="Uniformly random token grids are not a learned prior",
     max_items=16,

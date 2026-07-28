@@ -19,7 +19,7 @@ lessons:
     guide: lessons/01-mean-baseline.md
     notebook_source: notebook_sources/01-mean-baseline.py
     notebook: notebooks/01-mean-baseline.ipynb
-    estimated_minutes: 35
+    estimated_minutes: 60
     commands:
       - uv run latent-lab baseline recipes/ae/ae-001-linear.yaml
   - id: "02"

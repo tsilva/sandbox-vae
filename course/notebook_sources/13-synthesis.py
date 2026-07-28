@@ -57,7 +57,7 @@ summaries
 # %% [markdown]
 # ## Build the comparison from mechanisms
 #
-# Fill this table before reading your old notes:
+# Mentally reconstruct this table before reading your old notes:
 #
 # | Question | AE | VAE | VQ-VAE |
 # |---|---|---|---|
@@ -69,6 +69,20 @@ summaries
 # | Additional prior required? | | | |
 # | Main collapse mode | | | |
 # | Best use case | | | |
+#
+# <details>
+# <summary>Reveal a compact comparison</summary>
+#
+# | Question | AE | VAE | VQ-VAE |
+# |---|---|---|---|
+# | Latent type | deterministic continuous | stochastic continuous | spatial discrete indices |
+# | Bottleneck mechanism | dimension/task/regularization | KL-priced information rate | nearest codebook entry |
+# | Utilization diagnostic | latent activity/geometry | per-dimension raw KL | usage, dead codes, perplexity |
+# | Can sample directly? | no known prior | approximately from $N(0,I)$ | not coherently from uniform codes |
+# | Additional prior required? | yes for generation | usually no | yes, over token grids |
+# | Main collapse mode | identity or constant mapping | posterior collapse | codebook collapse/dead codes |
+# | Best use case | reconstruction/denoising | continuous probabilistic latents | discrete visual tokens |
+# </details>
 #
 # Total objectives are not comparable across these families. Observation models,
 # reductions, and auxiliary loss terms differ.
@@ -90,7 +104,17 @@ for family in ("AE", "VAE", "VQ-VAE"):
 # 4. Which extra model makes VQ-VAE samples coherent?
 # 5. Which first failure metric or figure would you inspect for each?
 #
-# > **Answers:**
+# <details>
+# <summary>Reveal one defensible mapping</summary>
+#
+# 1. A denoising AE for explicit corrupted-input to clean-target reconstruction.
+# 2. A VAE for a regularized continuous prior.
+# 3. A VQ-VAE for discrete visual tokens.
+# 4. An autoregressive token prior for coherent VQ-VAE token arrangements.
+# 5. AE: aligned reconstructions and baseline-relative MSE. VAE: reconstruction
+#    plus raw/per-dimension KL and prior samples. VQ-VAE: reconstruction,
+#    codebook usage/perplexity, token maps, and learned-prior samples.
+# </details>
 
 # %% [markdown]
 # ## Confirmation discipline

@@ -54,6 +54,14 @@ config = load_yaml(ROOT / "recipes/vae/vae-000-kl-off.yaml")
 #
 # Predict whether a reconstruction-like loss on $z$ can produce gradients for
 # both $\mu$ and `logvar`.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Yes. Once $\epsilon$ is sampled independently, $z$ is a differentiable
+# function of both $\mu$ and `logvar`. A loss on $z$ therefore supplies
+# pathwise gradients to both encoder outputs.
+# </details>
 
 # %%
 torch.manual_seed(0)
@@ -82,6 +90,15 @@ print("gradient dL/dlogvar:", logvar.grad)
 #
 # Predict raw KL, weighted KL, reconstruction quality, active dimensions, and
 # $N(0,I)$ sample quality before training.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Weighted KL must remain exactly zero. Raw KL can grow because nothing rewards
+# prior matching, and many latent dimensions may remain active for
+# reconstruction. Reconstructions can be strong, while $N(0,I)$ samples remain
+# unreliable because that distribution was not enforced.
+# </details>
 
 # %%
 result = run_training(config, run_root=ROOT / "runs")
@@ -91,7 +108,7 @@ print(result.best_validation_metrics)
 
 # %%
 records = load_metrics(run_dir)
-plot_metric_history(
+_ = plot_metric_history(
     records,
     [
         "validation/reconstruction_loss",
@@ -110,7 +127,7 @@ inputs, labels = balanced_class_batch(validation_loader, spec.num_classes)
 names = class_names(resolved["dataset"]["name"])
 with torch.no_grad():
     output = model(inputs)
-plot_reconstruction_grid(
+_ = plot_reconstruction_grid(
     inputs,
     output.reconstruction,
     labels=labels,
@@ -130,7 +147,7 @@ plot_reconstruction_grid(
 torch.manual_seed(0)
 with torch.no_grad():
     prior_samples = model.decode(torch.randn(16, config["model"]["latent_dim"]))
-plot_image_grid(
+_ = plot_image_grid(
     prior_samples,
     title="Beta-zero samples from an unconstrained N(0, I) prior",
     max_items=16,

@@ -57,6 +57,16 @@ study = load_yaml(study_path)
 #
 # Predict which intervention retains the most active dimensions and which gives
 # the lowest distortion.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Warm-up may let reconstruction establish useful latent paths before full KL
+# pressure. Free bits removes the incentive to compress each dimension below
+# its allowance and may therefore retain more active dimensions. Either can
+# improve distortion relative to an actually collapsed control, but neither
+# deserves credit if the control never collapsed.
+# </details>
 
 # %%
 subprocess.run(
@@ -125,7 +135,6 @@ axes[2].set(title="Active dimensions", ylabel="Count")
 for axis in axes:
     axis.tick_params(axis="x", rotation=20)
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Inspect optimization dynamics, not only endpoints

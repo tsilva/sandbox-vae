@@ -46,9 +46,14 @@ ROOT
 # Why should the trainer receive one common output structure instead of knowing
 # separate AE, VAE, and VQ-VAE calling conventions?
 #
-# Write your answer here before inspecting the next cell:
+# <details>
+# <summary>Reveal the reasoning</summary>
 #
-# > **Prediction:**
+# A shared reconstruction/latent/extras contract keeps the trainer generic. It
+# can optimize and track every model family without embedding model-specific
+# branches. Each model exposes specialized information through `extras`, while
+# reusable model mathematics stays in the model and objective modules.
+# </details>
 
 # %%
 recipe_paths = [

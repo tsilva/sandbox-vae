@@ -40,6 +40,15 @@ commitment_path = ROOT / "studies/vqvae/vqvae-002-commitment.yaml"
 #
 # Predict reconstruction MSE, codes used, dead codes, and perplexity for
 # $K\in\{8,32,128,512\}$. Distinguish nominal capacity from effective usage.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Small codebooks should use most entries and may constrain reconstruction.
+# Larger codebooks can lower MSE, but utilization and perplexity need not grow
+# proportionally; dead-code count should generally rise as nominal capacity
+# exceeds what optimization uses.
+# </details>
 
 # %%
 subprocess.run(
@@ -106,7 +115,6 @@ axes[2].plot(
 axes[2].set(xscale="log", xlabel="Codebook size", ylabel="Dead codes")
 figure.suptitle("More entries do not imply more effective symbols")
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Prediction B — commitment pressure
@@ -114,6 +122,16 @@ figure
 # Too little commitment allows encoder outputs to drift from embeddings; too
 # much can constrain reconstruction. Predict raw and weighted commitment terms,
 # reconstruction, and usage before running.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Increasing the weight should pull encoder outputs closer to selected
+# embeddings, reducing raw commitment distance after adaptation while
+# increasing its optimization importance. Very low pressure may destabilize the
+# discrete interface; very high pressure may damage reconstruction or usage.
+# The best tradeoff need not sit at an endpoint.
+# </details>
 
 # %%
 subprocess.run(
@@ -183,7 +201,6 @@ axes[1].plot(
 axes[1].set(xlabel="Commitment weight")
 axes[1].legend()
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Advancement gate

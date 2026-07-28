@@ -51,7 +51,14 @@ nonlinearity_study
 # Predict the direction of validation MSE for the linear and nonlinear models.
 # Then name the confound that remains even though latent dimension is controlled.
 #
-# > **Prediction:**
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# The nonlinear model should usually achieve lower reconstruction MSE because
+# it can represent curved mappings rather than one linear subspace. Parameter
+# count is a remaining confound: the hidden layers add many weights, so this is
+# not an isolated “effect of ReLU.”
+# </details>
 
 # %%
 subprocess.run(
@@ -104,7 +111,14 @@ for record in summary["records"]:
 # Sketch validation MSE for latent sizes 2, 8, 32, and 128. Do you expect equal
 # improvement from each step?
 #
-# > **Prediction:**
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# Reconstruction MSE should fall as latent size grows, usually with diminishing
+# returns. Very small latents discard substantial structure; very large latents
+# approach identity copying and weaken the compression pressure. Exact curve
+# shape remains an empirical result.
+# </details>
 
 # %%
 subprocess.run(
@@ -144,7 +158,6 @@ axis.set(
 )
 axis.grid(alpha=0.25)
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Deliberately challenge the objective

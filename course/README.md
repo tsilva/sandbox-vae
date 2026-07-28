@@ -10,7 +10,7 @@ images, notice contradictions, and explain the observed dynamics.
 Work through one lesson at a time:
 
 1. Open the generated notebook.
-2. Stop at every prediction prompt and write an answer.
+2. Pause at every question, reason mentally, then expand its answer check.
 3. Run one cell at a time.
 4. Inspect tensors, metrics, reconstructions, error maps, and diagnostics.
 5. Reconcile any result that contradicts your prediction.
@@ -63,7 +63,13 @@ Edit only `course/notebook_sources/*.py`. Cells use Jupytext percent markers:
 ```python
 # %% [markdown]
 # ## Predict before running
-# Write your hypothesis here.
+# What result should this mechanism produce?
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# State the causal expectation here.
+# </details>
 
 # %%
 result = run_training(config)
@@ -97,6 +103,10 @@ Executed copies are written beneath ignored `runs/notebook-executions/`.
 Reusable computation belongs in `src/latent_lab`. Notebook cells may configure
 experiments, call the trainer, and interrogate returned tensors, but must not
 define alternative models, objectives, or training loops.
+
+Question cells must not contain blank fields that ask learners to type into the
+distributed notebook. Use a concise question followed by a collapsed
+`<details>` reasoning check. Learners may take notes wherever they prefer.
 
 ## Course map
 

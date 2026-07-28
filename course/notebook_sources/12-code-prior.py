@@ -67,6 +67,16 @@ display(
 # Compare initial next-token cross-entropy with the uniform baseline $\log K$.
 # Predict validation perplexity and how learned-prior samples will differ from
 # uniform-token samples.
+#
+# <details>
+# <summary>Reveal the expected reasoning</summary>
+#
+# An untrained prior should begin near $\log K$ cross-entropy and perplexity
+# $K$. Learning spatial/token dependencies should reduce both below the uniform
+# reference. Learned-prior samples should contain more garment-like global
+# arrangements than independent uniform-token samples, though the small raster
+# GRU will remain imperfect.
+# </details>
 
 # %%
 codebook_size = vq_summary["codebook"]["codebook_size"]
@@ -84,7 +94,7 @@ prior_run_dir = result.run_dir
 load_run_summary(prior_run_dir)
 
 # %%
-plot_metric_history(
+_ = plot_metric_history(
     load_metrics(prior_run_dir),
     ["train/cross_entropy", "validation/cross_entropy"],
     title="Teacher-forced autoregressive token prediction",

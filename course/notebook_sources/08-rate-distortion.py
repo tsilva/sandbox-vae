@@ -39,7 +39,7 @@ study
 # %% [markdown]
 # ## Predict four regimes
 #
-# Fill this table before running:
+# Mentally predict this table before running, then expand the reasoning check:
 #
 # | Beta | Reconstruction | Raw KL | Active dimensions | Prior samples |
 # |---:|---|---|---|---|
@@ -49,6 +49,20 @@ study
 # | 4 | | | | |
 #
 # For each prediction, state the causal path from beta to encoder behavior.
+#
+# <details>
+# <summary>Reveal the expected qualitative trend</summary>
+#
+# | Beta | Reconstruction | Raw KL | Active dimensions | Prior samples |
+# |---:|---|---|---|---|
+# | 0 | strongest | highest | most | poor prior match |
+# | 0.1 | slightly worse | lower | many | improved |
+# | 1 | worse | lower | fewer | more coherent |
+# | 4 | weakest/collapse risk | lowest | fewest | prior-compatible but possibly uninformative |
+#
+# Optimization can violate a monotonic trend, so the experiment still decides
+# the actual result.
+# </details>
 
 # %%
 subprocess.run(
@@ -124,7 +138,6 @@ axes[1].set(
 )
 axes[1].grid(alpha=0.25)
 figure.tight_layout()
-figure
 
 # %% [markdown]
 # ## Images arbitrate ambiguous metrics
