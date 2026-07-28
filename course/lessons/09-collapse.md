@@ -1,5 +1,8 @@
 # Lesson 09 — Posterior collapse, warm-up, and free bits
 
+> Interactive lab: [open the generated notebook](../notebooks/09-collapse.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/09-collapse.py).
+
 ## Learning objective
 
 Recognize when the VAE decoder ignores its latent input and understand two
@@ -22,17 +25,17 @@ Low KL alone is not enough; inspect reconstruction and active dimensions.
 ### KL warm-up
 
 Increase beta from zero to its target over the first ten epochs. Early training
-can learn to use \(z\) before full prior pressure arrives.
+can learn to use $z$ before full prior pressure arrives.
 
 ### Free bits
 
 For each latent dimension, optimize:
 
-\[
+$$
 \max(\lambda, KL_j)
-\]
+$$
 
-Below \(\lambda\), the KL term is constant and supplies no gradient pushing that
+Below $\lambda$, the KL term is constant and supplies no gradient pushing that
 dimension closer to zero. This does not force the model to use the dimension;
 it removes the reward for compressing it below the allowance.
 
@@ -72,4 +75,3 @@ Given three hypothetical runs:
 
 explain why they require different diagnoses despite sharing some metric
 features.
-

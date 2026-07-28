@@ -5,6 +5,8 @@ lessons:
   - id: "00"
     title: Laboratory orientation and trust checks
     guide: lessons/00-laboratory.md
+    notebook_source: notebook_sources/00-laboratory.py
+    notebook: notebooks/00-laboratory.ipynb
     estimated_minutes: 30
     commands:
       - uv sync --locked
@@ -15,18 +17,24 @@ lessons:
   - id: "01"
     title: Reconstruction and the mean-image baseline
     guide: lessons/01-mean-baseline.md
+    notebook_source: notebook_sources/01-mean-baseline.py
+    notebook: notebooks/01-mean-baseline.ipynb
     estimated_minutes: 35
     commands:
       - uv run latent-lab baseline recipes/ae/ae-001-linear.yaml
   - id: "02"
     title: A genuinely linear autoencoder
     guide: lessons/02-linear-ae.md
+    notebook_source: notebook_sources/02-linear-ae.py
+    notebook: notebooks/02-linear-ae.ipynb
     estimated_minutes: 60
     commands:
       - uv run latent-lab train recipes/ae/ae-001-linear.yaml
   - id: "03"
     title: Nonlinearity and bottleneck capacity
     guide: lessons/03-nonlinear-capacity.md
+    notebook_source: notebook_sources/03-capacity.py
+    notebook: notebooks/03-capacity.ipynb
     estimated_minutes: 100
     commands:
       - uv run latent-lab study studies/ae/ae-002-nonlinearity.yaml --seeds 0
@@ -34,6 +42,8 @@ lessons:
   - id: "04"
     title: Denoising and sparse autoencoders
     guide: lessons/04-regularized-ae.md
+    notebook_source: notebook_sources/04-regularized-ae.py
+    notebook: notebooks/04-regularized-ae.ipynb
     estimated_minutes: 100
     commands:
       - uv run latent-lab study studies/ae/ae-004-denoising.yaml --seeds 0
@@ -41,42 +51,56 @@ lessons:
   - id: "05"
     title: AE latent geometry and the sampling failure
     guide: lessons/05-ae-geometry.md
+    notebook_source: notebook_sources/05-ae-geometry.py
+    notebook: notebooks/05-ae-geometry.ipynb
     estimated_minutes: 45
     commands:
       - uv run latent-lab inspect <AE_RUN_DIR>
   - id: "06"
     title: VAE distributions and the beta-zero control
     guide: lessons/06-vae-control.md
+    notebook_source: notebook_sources/06-vae-control.py
+    notebook: notebooks/06-vae-control.ipynb
     estimated_minutes: 75
     commands:
       - uv run latent-lab train recipes/vae/vae-000-kl-off.yaml
   - id: "07"
     title: ELBO, KL pressure, and a sampleable prior
     guide: lessons/07-standard-vae.md
+    notebook_source: notebook_sources/07-standard-vae.py
+    notebook: notebooks/07-standard-vae.ipynb
     estimated_minutes: 75
     commands:
       - uv run latent-lab train recipes/vae/vae-001-basic.yaml
   - id: "08"
     title: The VAE rate-distortion experiment
     guide: lessons/08-beta-sweep.md
+    notebook_source: notebook_sources/08-rate-distortion.py
+    notebook: notebooks/08-rate-distortion.ipynb
     estimated_minutes: 120
     commands:
       - uv run latent-lab study studies/vae/vae-001-beta-sweep.yaml --seeds 0
   - id: "09"
     title: Posterior collapse, warm-up, and free bits
     guide: lessons/09-collapse.md
+    notebook_source: notebook_sources/09-collapse.py
+    notebook: notebooks/09-collapse.ipynb
     estimated_minutes: 100
     commands:
       - uv run latent-lab study studies/vae/vae-002-collapse-remedies.yaml --seeds 0
   - id: "10"
     title: VQ-VAE quantization and straight-through learning
     guide: lessons/10-vqvae.md
+    notebook_source: notebook_sources/10-vqvae.py
+    notebook: notebooks/10-vqvae.ipynb
     estimated_minutes: 80
     commands:
       - uv run latent-lab train recipes/vqvae/vqvae-001-basic.yaml
   - id: "11"
     title: Codebook capacity, utilization, and commitment
     guide: lessons/11-codebook.md
+    notebook_source: notebook_sources/11-codebook.py
+    notebook: notebooks/11-codebook.ipynb
     estimated_minutes: 150
     commands:
       - uv run latent-lab study studies/vqvae/vqvae-001-codebook-size.yaml --seeds 0
@@ -84,13 +108,16 @@ lessons:
   - id: "12"
     title: Turning VQ-VAE tokens into a generative model
     guide: lessons/12-code-prior.md
+    notebook_source: notebook_sources/12-code-prior.py
+    notebook: notebooks/12-code-prior.ipynb
     estimated_minutes: 120
     commands:
       - uv run latent-lab train-prior recipes/prior/prior-001-gru.yaml <VQ_RUN_DIR>/checkpoint-best.pt
   - id: "13"
     title: Final comparison and teach-back
     guide: lessons/13-synthesis.md
+    notebook_source: notebook_sources/13-synthesis.py
+    notebook: notebooks/13-synthesis.ipynb
     estimated_minutes: 120
     commands:
       - uv run pytest
-

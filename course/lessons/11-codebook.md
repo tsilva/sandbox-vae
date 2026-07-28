@@ -1,5 +1,8 @@
 # Lesson 11 — Codebook capacity, utilization, and commitment
 
+> Interactive lab: [open the generated notebook](../notebooks/11-codebook.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/11-codebook.py).
+
 ## Learning objective
 
 Treat the codebook as a learned communication channel rather than assuming
@@ -70,6 +73,5 @@ Do not implement these yet. Predict how each might help:
 
 ## Advancement gate
 
-Given \(K=512\), 40 used codes, and perplexity 9, explain all three numbers and
+Given $K=512$, 40 used codes, and perplexity 9, explain all three numbers and
 why none alone establishes representation quality.
-

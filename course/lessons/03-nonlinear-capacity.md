@@ -1,5 +1,8 @@
 # Lesson 03 — Nonlinearity and bottleneck capacity
 
+> Interactive lab: [open the generated notebook](../notebooks/03-capacity.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/03-capacity.py).
+
 ## Learning objective
 
 Separate two sources of model capacity:
@@ -64,4 +67,3 @@ change your conclusion.
 Explain why “bigger latent is better” is incomplete. Your answer must mention
 the task objective, compression, downstream usefulness, and the danger of an
 identity mapping.
-

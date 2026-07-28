@@ -20,6 +20,11 @@ latent-lab = "latent_lab.cli:main"
 
 [dependency-groups]
 dev = [
+  "ipykernel>=6.29,<8",
+  "jupyterlab>=4.2,<5",
+  "jupytext>=1.16,<2",
+  "nbclient>=0.10,<1",
+  "nbformat>=5.10,<6",
   "pytest>=8.0",
 ]
 

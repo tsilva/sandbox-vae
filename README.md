@@ -4,8 +4,12 @@ Latent Lab is a small, inspectable experiment repository for learning
 autoencoders, variational autoencoders, and vector-quantized autoencoders by
 running controlled experiments.
 
-The step-by-step course starts at [course/README.md](course/README.md). List
-lessons from the terminal with:
+The step-by-step executable course starts at
+[course/README.md](course/README.md). Its canonical lessons are agent-editable
+Jupytext `py:percent` files; deterministic `.ipynb` builds are committed for
+Jupyter and GitHub readers.
+
+List lessons from the terminal with:
 
 ```bash
 uv run latent-lab course
@@ -21,8 +25,10 @@ The progression is deliberate:
 ## Quick start
 
 ```bash
-uv sync
+uv sync --locked
 uv run pytest
+uv run python scripts/build_notebooks.py --check
+uv run jupyter lab course/notebooks/01-mean-baseline.ipynb
 uv run latent-lab train recipes/smoke/fake-ae.yaml
 uv run latent-lab train recipes/smoke/fake-vae.yaml
 uv run latent-lab train recipes/smoke/fake-vqvae.yaml
@@ -42,7 +48,9 @@ checkpoints, and raw figures are stored in `runs/` and ignored by Git.
   evidence.
 - `reports/` contains conclusions worth preserving.
 - `runs/` contains disposable generated artifacts.
-- `notebooks/` may analyze the package, but never own model or training logic.
+- `course/notebook_sources/` contains the canonical executable lessons.
+- `course/notebooks/` contains deterministic generated Jupyter notebooks.
+- Notebooks probe the package, but never own reusable model or training logic.
 
 Every run writes its resolved configuration, JSONL metrics, summary, best
 checkpoint, and a fixed reconstruction grid. A study changes one declared

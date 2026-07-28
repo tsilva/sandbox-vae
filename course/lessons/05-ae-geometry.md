@@ -1,5 +1,8 @@
 # Lesson 05 — AE latent geometry and the sampling failure
 
+> Interactive lab: [open the generated notebook](../notebooks/05-ae-geometry.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/05-ae-geometry.py).
+
 ## Learning objective
 
 Distinguish three claims that are often conflated:
@@ -43,15 +46,15 @@ For interpolation:
 
 For random latent samples:
 
-- The tool draws \(z\sim N(0,I)\).
-- The AE was never told that encoded examples should follow \(N(0,I)\).
+- The tool draws $z\sim N(0,I)$.
+- The AE was never told that encoded examples should follow $N(0,I)$.
 - The scale, orientation, density, and holes of the encoded distribution are
   therefore unconstrained.
 
 ## The motivating failure
 
-An AE gives us \(f(x)\) and \(g(z)\), but not a tractable model of
-\(p(z)\). Sampling a random vector is an out-of-distribution query to the
+An AE gives us $f(x)$ and $g(z)$, but not a tractable model of
+$p(z)$. Sampling a random vector is an out-of-distribution query to the
 decoder.
 
 This is the exact problem the next model will address. The VAE will trade some
@@ -63,4 +66,3 @@ prior.
 Explain why smooth interpolation does not imply valid random sampling. Your
 answer must use the concepts of occupied latent regions, probability density,
 and training constraints.
-

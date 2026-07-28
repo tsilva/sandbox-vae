@@ -9,8 +9,8 @@ from typing import Any
 import torch
 
 from latent_lab.config import save_yaml, validate_recipe
-from latent_lab.data import build_dataloaders
-from latent_lab.diagnostics import save_reconstruction_grid
+from latent_lab.data import build_dataloaders, class_names
+from latent_lab.diagnostics import per_example_mse, save_reconstruction_grid
 from latent_lab.training.seeding import resolve_device, seed_everything
 
 
@@ -18,6 +18,45 @@ from latent_lab.training.seeding import resolve_device, seed_everything
 class BaselineResult:
     run_dir: Path
     validation_mse: float
+
+
+@torch.no_grad()
+def compute_mean_image(
+    train_loader,
+    device: torch.device,
+) -> tuple[torch.Tensor, int]:
+    """Compute the pixelwise training-set mean without retaining the dataset."""
+
+    pixel_sum = None
+    examples = 0
+    for inputs, _labels in train_loader:
+        inputs = inputs.to(device)
+        batch_sum = inputs.sum(dim=0, keepdim=True)
+        pixel_sum = batch_sum if pixel_sum is None else pixel_sum + batch_sum
+        examples += inputs.shape[0]
+    if pixel_sum is None or examples == 0:
+        raise ValueError("Cannot compute a mean image from an empty loader")
+    return pixel_sum / examples, examples
+
+
+@torch.no_grad()
+def constant_reconstruction_errors(
+    data_loader,
+    prediction: torch.Tensor,
+    device: torch.device,
+) -> torch.Tensor:
+    """Return per-example MSE for a prediction that ignores its input."""
+
+    errors = []
+    for inputs, _labels in data_loader:
+        inputs = inputs.to(device)
+        predictions = prediction.expand(inputs.shape[0], -1, -1, -1)
+        errors.append(per_example_mse(inputs, predictions).cpu())
+    if not errors:
+        raise ValueError(
+            "Cannot evaluate a constant prediction on an empty loader"
+        )
+    return torch.cat(errors)
 
 
 @torch.no_grad()
@@ -36,27 +75,19 @@ def run_mean_image_baseline(
         config["dataset"], training
     )
 
-    pixel_sum = None
-    examples = 0
-    for inputs, _labels in train_loader:
-        inputs = inputs.to(device)
-        batch_sum = inputs.sum(dim=0, keepdim=True)
-        pixel_sum = batch_sum if pixel_sum is None else pixel_sum + batch_sum
-        examples += inputs.shape[0]
-    mean_image = pixel_sum / examples
-
-    squared_error = 0.0
-    validation_examples = 0
+    mean_image, examples = compute_mean_image(train_loader, device)
     fixed_inputs = None
-    for inputs, _labels in validation_loader:
-        inputs = inputs.to(device)
+    fixed_labels = None
+    for inputs, labels in validation_loader:
         if fixed_inputs is None:
-            fixed_inputs = inputs
-        squared_error += float(
-            (inputs - mean_image).square().flatten(start_dim=1).mean(dim=1).sum()
-        )
-        validation_examples += inputs.shape[0]
-    validation_mse = squared_error / validation_examples
+            fixed_inputs = inputs.to(device)
+            fixed_labels = labels
+            break
+    validation_errors = constant_reconstruction_errors(
+        validation_loader, mean_image, device
+    )
+    validation_mse = float(validation_errors.mean())
+    validation_examples = validation_errors.numel()
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     dataset_name = str(config["dataset"]["name"])
@@ -64,11 +95,15 @@ def run_mean_image_baseline(
     run_dir.mkdir(parents=True, exist_ok=True)
     save_yaml(config, run_dir / "resolved-config.yaml")
     assert fixed_inputs is not None
+    assert fixed_labels is not None
     predictions = mean_image.expand(fixed_inputs.shape[0], -1, -1, -1)
     save_reconstruction_grid(
         fixed_inputs,
         predictions,
         run_dir / "figures" / "mean-image-baseline.png",
+        labels=fixed_labels,
+        class_names=class_names(dataset_name),
+        include_error=True,
     )
     summary = {
         "baseline": "mean_training_image",

@@ -1,5 +1,8 @@
 # Lesson 13 — Final comparison and teach-back
 
+> Interactive lab: [open the generated notebook](../notebooks/13-synthesis.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/13-synthesis.py).
+
 ## Learning objective
 
 Choose among AE, VAE, and VQ-VAE based on representation and generation
@@ -82,4 +85,3 @@ The course is complete when you can predict the major metric and visual changes
 before running a beta, bottleneck, or codebook ablation—and can explain a
 contradictory result by proposing a controlled next experiment rather than
 changing several things at once.
-

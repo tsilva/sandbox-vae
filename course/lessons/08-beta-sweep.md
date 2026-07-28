@@ -1,5 +1,8 @@
 # Lesson 08 — The VAE rate-distortion experiment
 
+> Interactive lab: [open the generated notebook](../notebooks/08-rate-distortion.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/08-rate-distortion.py).
+
 ## Learning objective
 
 Observe directly that beta is not a generic “regularization strength.” It sets
@@ -61,4 +64,3 @@ variants, or rerun the full study if compute is unimportant.
 Describe beta in rate–distortion language. Given a run with excellent
 reconstruction, high KL, and poor prior samples, diagnose the model without
 using the vague phrase “overfitting.”
-

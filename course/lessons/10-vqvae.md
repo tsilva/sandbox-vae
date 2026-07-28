@@ -1,23 +1,26 @@
 # Lesson 10 — VQ-VAE quantization and straight-through learning
 
+> Interactive lab: [open the generated notebook](../notebooks/10-vqvae.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/10-vqvae.py).
+
 ## Learning objective
 
 Understand how a continuous encoder output becomes a grid of discrete tokens
 and how gradients train both the encoder and the codebook.
 
-For each encoder vector \(z_e\), select the nearest embedding:
+For each encoder vector $z_e$, select the nearest embedding:
 
-\[
+$$
 k=\arg\min_j \lVert z_e-e_j\rVert^2,\qquad z_q=e_k
-\]
+$$
 
 The objective contains:
 
-\[
+$$
 L = L_{\text{reconstruction}}
 + \lVert \operatorname{sg}[z_e]-e_k\rVert^2
 + \beta\lVert z_e-\operatorname{sg}[e_k]\rVert^2
-\]
+$$
 
 where `sg` means stop-gradient.
 
@@ -49,7 +52,7 @@ uv run latent-lab inspect <PRINTED_RUN_DIR>
 ## Inspect
 
 - `reconstructions.png`
-- `token-maps.png`: each \(7\times7\) cell is a discrete code index.
+- `token-maps.png`: each $7\times7$ cell is a discrete code index.
 - `codebook-usage.png`
 - `diagnostics.json`: codes used, dead codes, and perplexity.
 - `uniform-random-token-samples.png`
@@ -73,4 +76,3 @@ Explain why:
 2. The straight-through estimator is deliberately biased.
 3. Codebook perplexity and codebook size are different.
 4. A trained VQ-VAE is not yet a complete generative model.
-

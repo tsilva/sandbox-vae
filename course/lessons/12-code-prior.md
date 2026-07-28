@@ -1,20 +1,23 @@
 # Lesson 12 — Turning VQ-VAE tokens into a generative model
 
+> Interactive lab: [open the generated notebook](../notebooks/12-code-prior.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/12-code-prior.py).
+
 ## Learning objective
 
 Learn the separation between representation learning and prior modeling.
 
 The VQ-VAE learns:
 
-\[
+$$
 x \rightarrow z_e \rightarrow k_{1:H,1:W} \rightarrow \hat{x}
-\]
+$$
 
 The prior learns:
 
-\[
+$$
 p(k_1,\dots,k_N)=\prod_{i=1}^{N}p(k_i\mid k_{<i})
-\]
+$$
 
 where the spatial token grid is flattened in raster order.
 
@@ -35,12 +38,12 @@ The learned prior should answer:
 - `src/latent_lab/training/prior_trainer.py`
 
 The small GRU prior uses teacher forcing during training. Its input at position
-\(i\) is the true previous token; its target is the current token. At sampling
+$i$ is the true previous token; its target is the current token. At sampling
 time it must consume its own sampled history.
 
 ## Predict
 
-- Initial cross-entropy relative to \(\log K\), the uniform-prior baseline.
+- Initial cross-entropy relative to $\log K$, the uniform-prior baseline.
 - Whether validation perplexity should approach codebook size or effective
   token uncertainty.
 - How learned-prior samples should differ from uniform-token samples.
@@ -86,4 +89,3 @@ two-stage generative pipeline, not state-of-the-art samples.
 Explain why the VQ encoder and decoder can remain frozen while training the
 prior, and why improving prior likelihood cannot repair information already
 discarded by the VQ-VAE.
-

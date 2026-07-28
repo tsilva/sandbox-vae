@@ -1,5 +1,8 @@
 # Lesson 02 — A genuinely linear autoencoder
 
+> Interactive lab: [open the generated notebook](../notebooks/02-linear-ae.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/02-linear-ae.py).
+
 ## Learning objective
 
 Understand an undercomplete deterministic bottleneck and its relationship to
@@ -7,11 +10,11 @@ PCA.
 
 The model is:
 
-\[
+$$
 z = W_e x + b_e,\qquad \hat{x}=W_dz+b_d
-\]
+$$
 
-with an eight-dimensional latent \(z\). There are no hidden nonlinearities and
+with an eight-dimensional latent $z$. There are no hidden nonlinearities and
 the output activation is explicitly `none`.
 
 ## Read and predict
@@ -27,7 +30,7 @@ Predict:
 - Whether it will beat the mean-image baseline.
 - Which garment details an eight-dimensional linear subspace will lose.
 - Whether nearby latent points should decode smoothly.
-- Whether samples drawn arbitrarily from \(N(0,I)\) should look like garments.
+- Whether samples drawn arbitrarily from $N(0,I)$ should look like garments.
 
 ## Run
 
@@ -69,4 +72,3 @@ valid codes.
 Draw the tensor shapes from `[B,1,28,28]` through flattening, the
 eight-dimensional bottleneck, and reconstruction. Explain why this model can
 compress but cannot yet generate by sampling a known prior.
-

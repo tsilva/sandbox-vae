@@ -1,12 +1,12 @@
 import torch
 
-from latent_lab.training.trainer import _corrupt_inputs, _effective_beta
+from latent_lab.training.trainer import _effective_beta, corrupt_inputs
 
 
 def test_gaussian_corruption_preserves_shape_and_range() -> None:
     torch.manual_seed(0)
     inputs = torch.full((2, 1, 8, 8), 0.5)
-    corrupted = _corrupt_inputs(
+    corrupted = corrupt_inputs(
         inputs,
         {
             "kind": "gaussian",
@@ -26,4 +26,3 @@ def test_kl_warmup_reaches_target_beta() -> None:
     assert _effective_beta(config, 2) == 1.0
     assert _effective_beta(config, 4) == 2.0
     assert _effective_beta(config, 10) == 2.0
-

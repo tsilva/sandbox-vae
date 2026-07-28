@@ -1,5 +1,8 @@
 # Lesson 07 — ELBO, KL pressure, and a sampleable prior
 
+> Interactive lab: [open the generated notebook](../notebooks/07-standard-vae.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/07-standard-vae.py).
+
 ## Learning objective
 
 Interpret the VAE objective as a rate–distortion tradeoff and inspect whether
@@ -7,14 +10,14 @@ the prior is becoming usable.
 
 The implemented minimization objective is:
 
-\[
+$$
 L =
 \underbrace{-\mathbb E_{q(z|x)}[\log p_\theta(x|z)]}_{\text{distortion}}
 +
 \beta\underbrace{D_{KL}(q_\phi(z|x)\|p(z))}_{\text{rate}}
-\]
+$$
 
-with \(p(z)=N(0,I)\), Bernoulli observation likelihood, and \(\beta=1\).
+with $p(z)=N(0,I)$, Bernoulli observation likelihood, and $\beta=1$.
 
 ## Predict before running
 
@@ -60,6 +63,5 @@ photorealistic.
 ## Advancement gate
 
 Explain why lowering KL all the way to zero is not necessarily success. Include
-the phrases “posterior collapse,” “decoder ignores \(z\),” and “reconstruction
+the phrases “posterior collapse,” “decoder ignores $z$,” and “reconstruction
 evidence.”
-

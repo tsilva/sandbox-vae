@@ -1,5 +1,8 @@
 # Lesson 00 — Laboratory orientation and trust checks
 
+> Interactive lab: [open the generated notebook](../notebooks/00-laboratory.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/00-laboratory.py).
+
 ## Learning objective
 
 Understand the repository contract and establish that every model can execute,
@@ -66,4 +69,3 @@ Without reading code, explain:
 2. What a study adds on top of a recipe.
 3. Why raw runs are ignored by Git while reports are committed.
 4. Why passing a smoke run does not show that a model is scientifically valid.
-

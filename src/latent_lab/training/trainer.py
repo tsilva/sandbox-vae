@@ -11,7 +11,7 @@ from typing import Any
 import torch
 
 from latent_lab.config import save_yaml, validate_recipe
-from latent_lab.data import build_dataloaders
+from latent_lab.data import build_dataloaders, class_names
 from latent_lab.diagnostics import (
     generate_generative_diagnostics,
     save_reconstruction_grid,
@@ -42,7 +42,7 @@ def _run_directory(root: Path, recipe_id: str, seed: int) -> Path:
     return candidate
 
 
-def _corrupt_inputs(inputs: torch.Tensor, config: dict[str, Any] | None):
+def corrupt_inputs(inputs: torch.Tensor, config: dict[str, Any] | None):
     if not config:
         return inputs
     kind = str(config.get("kind", "none")).lower()
@@ -97,7 +97,9 @@ def run_training(
     run_dir.mkdir(parents=True)
     save_yaml(config, run_dir / "resolved-config.yaml")
     tracker = LocalTracker(run_dir)
-    fixed_inputs = next(iter(validation_loader))[0].to(device)
+    fixed_inputs, fixed_labels = next(iter(validation_loader))
+    fixed_inputs = fixed_inputs.to(device)
+    dataset_class_names = class_names(str(config["dataset"]["name"]))
     corruption_config = training.get("input_corruption")
 
     best_loss = float("inf")
@@ -115,7 +117,7 @@ def run_training(
         examples = 0
         for inputs, _labels in train_loader:
             clean_inputs = inputs.to(device)
-            model_inputs = _corrupt_inputs(clean_inputs, corruption_config)
+            model_inputs = corrupt_inputs(clean_inputs, corruption_config)
             optimizer.zero_grad(set_to_none=True)
             losses = objective(model(model_inputs), clean_inputs)
             losses["loss"].backward()
@@ -169,15 +171,21 @@ def run_training(
         fixed_inputs,
         fixed_reconstructions,
         run_dir / "figures" / "reconstructions.png",
+        labels=fixed_labels,
+        class_names=dataset_class_names,
+        include_error=True,
     )
     if corruption_config:
         with torch.no_grad():
-            corrupted = _corrupt_inputs(fixed_inputs, corruption_config)
+            corrupted = corrupt_inputs(fixed_inputs, corruption_config)
             denoised = model(corrupted).reconstruction
         save_reconstruction_grid(
             corrupted,
             denoised,
             run_dir / "figures" / "corrupted-input-reconstructions.png",
+            labels=fixed_labels,
+            class_names=dataset_class_names,
+            include_error=True,
         )
 
     diagnostic_summary = generate_generative_diagnostics(

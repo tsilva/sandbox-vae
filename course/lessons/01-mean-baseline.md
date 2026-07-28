@@ -1,15 +1,18 @@
 # Lesson 01 — Reconstruction and the mean-image baseline
 
+> Interactive lab: [open the generated notebook](../notebooks/01-mean-baseline.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/01-mean-baseline.py).
+
 ## Learning objective
 
 Learn why a loss number becomes meaningful only relative to a baseline.
 
-For image \(x\) and reconstruction \(\hat{x}\), the mean-squared error is:
+For image $x$ and reconstruction $\hat{x}$, the mean-squared error is:
 
-\[
+$$
 \operatorname{MSE}(x,\hat{x}) =
 \frac{1}{CHW}\sum_{c,h,w}(x_{chw}-\hat{x}_{chw})^2
-\]
+$$
 
 Under MSE, a model that ignores its input can minimize expected loss by
 predicting the mean training image.
@@ -53,4 +56,3 @@ can score better than a sharp image shifted one pixel. Therefore:
 Explain why “validation MSE = 0.05” is not interpretable without the input
 range, reduction convention, dataset, and baseline. Record the baseline in a
 worksheet for use in Lesson 02.
-

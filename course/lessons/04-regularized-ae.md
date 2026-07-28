@@ -1,5 +1,8 @@
 # Lesson 04 — Denoising and sparse autoencoders
 
+> Interactive lab: [open the generated notebook](../notebooks/04-regularized-ae.ipynb).
+> Authors edit the [Jupytext source](../notebook_sources/04-regularized-ae.py).
+
 ## Learning objective
 
 Learn that an autoencoder bottleneck is not defined only by its number of
@@ -8,12 +11,12 @@ latent representation must preserve.
 
 ## Experiment A: denoising
 
-The model receives corrupted input \(\tilde{x}\) but is trained against clean
-target \(x\):
+The model receives corrupted input $\tilde{x}$ but is trained against clean
+target $x$:
 
-\[
+$$
 L = \lVert g(f(\tilde{x}))-x\rVert^2
-\]
+$$
 
 Predict whether denoising training will improve noisy-input output and whether
 it might slightly worsen clean-input reconstruction.
@@ -35,12 +38,12 @@ validation metric measures clean reconstruction. Record this limitation.
 
 The sparse objective is:
 
-\[
+$$
 L = L_{\text{reconstruction}} + \lambda\operatorname{mean}(|z|)
-\]
+$$
 
 Predict the curves for reconstruction MSE and mean absolute latent activation
-as \(\lambda\) increases.
+as $\lambda$ increases.
 
 ```bash
 uv run latent-lab study studies/ae/ae-005-sparsity.yaml --seeds 0
@@ -67,4 +70,3 @@ Contrast these three bottlenecks:
 - L1 pressure on latent activity
 
 Explain what behavior each one encourages and why they are not interchangeable.
-

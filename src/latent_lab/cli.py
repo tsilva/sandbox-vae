@@ -193,8 +193,12 @@ def _course(args: argparse.Namespace) -> None:
         raise SystemExit(f"Unknown lesson: {args.lesson}")
     manifest_path = _find_course_manifest()
     guide = manifest_path.parent / lesson["guide"]
+    notebook_source = manifest_path.parent / lesson["notebook_source"]
+    notebook = manifest_path.parent / lesson["notebook"]
     print(f"{lesson['id']} — {lesson['title']}")
     print(f"guide={guide}")
+    print(f"notebook_source={notebook_source}")
+    print(f"notebook={notebook}")
     print(f"estimated_minutes={lesson['estimated_minutes']}")
     print("\ncommands:")
     for command in lesson.get("commands", []):
